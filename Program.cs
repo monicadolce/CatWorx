@@ -50,7 +50,7 @@ namespace CatWorx.BadgeMaker
         {
             // Iterating over Employee instances to get an employee's full name from GetFullName() 
             for (int i = 0; i < employees.Count; i++)
-           
+
             {
                 // Each item in employees is now an Employee instance
 
@@ -62,7 +62,7 @@ namespace CatWorx.BadgeMaker
                 */
                 string template = "{0,-10}\t{1,-20}\t{2}";
                 Console.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetFullName(), employees[i].GetPhotoUrl()));
-            }
+                Console.WriteLine(employees[i]);
             }
         }
 
@@ -73,3 +73,4 @@ namespace CatWorx.BadgeMaker
         }
     }
 }
+
