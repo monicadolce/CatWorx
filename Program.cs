@@ -6,6 +6,7 @@ The System namespace is part of the .NET framework and is a collection of common
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CatWorx.BadgeMaker
 {
@@ -46,11 +47,12 @@ namespace CatWorx.BadgeMaker
         }
 
         
-        static void Main(string[] args)
+        async static Task Main(string[] args)
         {
             List<Employee> employees = GetEmployees();
             Util.PrintEmployees(employees);
             Util.MakeCSV(employees);
+            await Util.MakeBadges(employees);
         }
     }
 }
