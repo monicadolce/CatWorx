@@ -131,7 +131,7 @@ namespace CatWorx.BadgeMaker
                         SKData data = finalImage.Encode();
                         string template = "data/{0}_badge.png";
                         data.SaveTo(File.OpenWrite(string.Format(template, employees[i].GetId())));
-                        // data.SaveTo(File.OpenWrite("data/employeeBadge.png"));
+                        data.SaveTo(File.OpenWrite("data/employeeBadge.png"));
                        
                     }
                 }

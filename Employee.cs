@@ -8,6 +8,8 @@ namespace CatWorx.BadgeMaker
         private int Id;
         private string PhotoUrl;
 
+        
+
         public Employee(string firstName, string lastName, int id, string photoUrl)
         {
             // Use camelCase for the parameters and PascalCase when assigning them to properties.
