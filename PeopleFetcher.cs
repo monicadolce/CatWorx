@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 
-namespace  CatWorx.BadgeMaker 
+
+namespace CatWorx.BadgeMaker
 {
-  class PeopleFetcher 
-  {
-    public static List<Employee> GetEmployees()
+    class PeopleFetcher
+    {
+        public static List<Employee> GetEmployees()
         {
-    
+
             List<Employee> employees = new List<Employee>();
-           
+
             while (true)
             {
 
@@ -45,10 +45,11 @@ namespace  CatWorx.BadgeMaker
             using (HttpClient client = new HttpClient())
             {
                 // Download string from randomuser api
-                // string response = client.DownloadString("https://randomuser.me/api/?results=10&nat=us&inc=name,id,picture");
                 string response = await client.GetStringAsync("https://randomuser.me/api/?results=10&nat=us&inc=name,id,picture");
                 JObject json = JObject.Parse(response);
-                foreach (JToken token in json.SelectToken("results")!) {
+                // Loop through each token in api response results
+                foreach (JToken token in json.SelectToken("results")!)
+                {
                     // Parse JSON data
                     Employee emp = new Employee
                     (
@@ -59,21 +60,9 @@ namespace  CatWorx.BadgeMaker
                     );
                     employees.Add(emp);
                 }
-               
-                // Loop through each token in api response results
-                // foreach(JToken person in json.SelectToken("results")) {
-                //     Employee employee = new Employee
-                //     (
-                //         person.SelectToken("name.first").ToString(),
-                //         person.SelectToken("name.last").ToString(),
-                //         Int32.Parse(person.SelectToken("id.value").ToString().Replace("-", "")),
-                //         person.SelectToken("picture.large").ToString()
-                //     );
-                //     employees.Add(employee);
-                // }
+
             }
             return employees;
         }
     }
 }
-

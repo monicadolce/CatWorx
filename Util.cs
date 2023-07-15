@@ -63,86 +63,80 @@ namespace CatWorx.BadgeMaker
             }
         }
 
-            /*
-            async—The MakeBadges() method will be asynchronous and use an async/await syntax that is similar to JavaScript. 
-            This is necessary because the method we use from the HttpClient object is asynchronous.
-            Task—This is the required return type for an asynchronous method that returns no value.
-            public—Must be accessible by the Main() method.
-            void—The purpose of these methods is to create a file or print information, so there is no need for a return.
-            static—Scoped to class, so can be invoked directly without instantiating an object.
-            List<Employee>—Employees parameters, the data source of employee info.
-            */
-            async public static Task MakeBadges(List<Employee> employees)
+        /*
+        async—The MakeBadges() method will be asynchronous and use an async/await syntax that is similar to JavaScript. 
+        This is necessary because the method we use from the HttpClient object is asynchronous.
+        Task—This is the required return type for an asynchronous method that returns no value.
+        public—Must be accessible by the Main() method.
+        void—The purpose of these methods is to create a file or print information, so there is no need for a return.
+        static—Scoped to class, so can be invoked directly without instantiating an object.
+        List<Employee>—Employees parameters, the data source of employee info.
+        */
+        async public static Task MakeBadges(List<Employee> employees)
+        {
+            // Layout variables
+            int BADGE_WIDTH = 669;
+            int BADGE_HEIGHT = 1044;
+
+            int PHOTO_LEFT_X = 184;
+            int PHOTO_TOP_Y = 215;
+            int PHOTO_RIGHT_X = 486;
+            int PHOTO_BOTTOM_Y = 517;
+
+            int COMPANY_NAME_Y = 150;
+
+            int EMPLOYEE_NAME_Y = 600;
+
+            int EMPLOYEE_ID_Y = 730;
+
+            // instance of HttpClient is disposed after code in block has run
+            using (HttpClient client = new HttpClient())
             {
-                // Layout variables
-                int BADGE_WIDTH = 669;
-                int BADGE_HEIGHT= 1044;
-
-                int PHOTO_LEFT_X = 184;
-                int PHOTO_TOP_Y = 215;
-                int PHOTO_RIGHT_X = 486;
-                int PHOTO_BOTTOM_Y = 517;
-
-                int COMPANY_NAME_Y = 150;
-
-                int EMPLOYEE_NAME_Y = 600; 
-
-                int EMPLOYEE_ID_Y = 730;
-
-                // instance of HttpClient is disposed after code in block has run
-                using(HttpClient client = new HttpClient())
+                for (int i = 0; i < employees.Count; i++)
                 {
-                    for (int i = 0; i < employees.Count; i++)
-                    {
-                        SKImage photo = SKImage.FromEncodedData(await client.GetStreamAsync(employees[i].GetPhotoUrl()));
-                        SKImage background = SKImage.FromEncodedData(File.OpenRead("badge.png"));
-                        
-                        // SKData data = background.Encode();
-                        // data.SaveTo(File.OpenWrite("data/employeeBadge.png"));
+                    SKImage photo = SKImage.FromEncodedData(await client.GetStreamAsync(employees[i].GetPhotoUrl()));
+                    SKImage background = SKImage.FromEncodedData(File.OpenRead("badge.png"));
 
-                        SKBitmap badge = new SKBitmap(BADGE_WIDTH, BADGE_HEIGHT);
-                        SKCanvas canvas = new SKCanvas(badge);
+                    // SKData data = background.Encode();
+                    // data.SaveTo(File.OpenWrite("data/employeeBadge.png"));
 
-                        canvas.DrawImage(background, new SKRect(0, 0, BADGE_WIDTH, BADGE_HEIGHT));
-                        canvas.DrawImage(photo, new SKRect(PHOTO_LEFT_X, PHOTO_TOP_Y, PHOTO_RIGHT_X, PHOTO_BOTTOM_Y));
-                        
+                    SKBitmap badge = new SKBitmap(BADGE_WIDTH, BADGE_HEIGHT);
+                    SKCanvas canvas = new SKCanvas(badge);
 
-                        SKPaint paint = new SKPaint();
-                        paint.TextSize = 42.0f;
-                        paint.IsAntialias = true;
-                        paint.Color = SKColors.White;
-                        paint.IsStroke = false;
-                        paint.TextAlign = SKTextAlign.Center;
-                        paint.Typeface = SKTypeface.FromFamilyName("Arial");
-                        // Company name
-                        canvas.DrawText(employees[i].GetCompanyName(), BADGE_WIDTH / 2f, COMPANY_NAME_Y, paint);
+                    canvas.DrawImage(background, new SKRect(0, 0, BADGE_WIDTH, BADGE_HEIGHT));
+                    canvas.DrawImage(photo, new SKRect(PHOTO_LEFT_X, PHOTO_TOP_Y, PHOTO_RIGHT_X, PHOTO_BOTTOM_Y));
 
-                        paint.Color = SKColors.Black;
-                        // Employee Name
-                        canvas.DrawText(employees[i].GetFullName(), BADGE_WIDTH / 2f, EMPLOYEE_NAME_Y, paint);
 
-                        paint.Typeface = SKTypeface.FromFamilyName("Courier New");
-                        // Employee ID
-                        canvas.DrawText(employees[i].GetId().ToString(), BADGE_WIDTH / 2f, EMPLOYEE_ID_Y, paint);
+                    SKPaint paint = new SKPaint();
+                    paint.TextSize = 42.0f;
+                    paint.IsAntialias = true;
+                    paint.Color = SKColors.White;
+                    paint.IsStroke = false;
+                    paint.TextAlign = SKTextAlign.Center;
+                    paint.Typeface = SKTypeface.FromFamilyName("Arial");
+                    // Company name
+                    canvas.DrawText(employees[i].GetCompanyName(), BADGE_WIDTH / 2f, COMPANY_NAME_Y, paint);
 
-                        
-                        
-                        SKImage finalImage = SKImage.FromBitmap(badge);
-                        SKData data = finalImage.Encode();
-                        string template = "data/{0}_badge.png";
-                        data.SaveTo(File.OpenWrite(string.Format(template, employees[i].GetId())));
-                        data.SaveTo(File.OpenWrite("data/employeeBadge.png"));
-                       
-                    }
+                    paint.Color = SKColors.Black;
+                    // Employee Name
+                    canvas.DrawText(employees[i].GetFullName(), BADGE_WIDTH / 2f, EMPLOYEE_NAME_Y, paint);
+
+                    paint.Typeface = SKTypeface.FromFamilyName("Courier New");
+                    // Employee ID
+                    canvas.DrawText(employees[i].GetId().ToString(), BADGE_WIDTH / 2f, EMPLOYEE_ID_Y, paint);
+
+                    // solution
+                    SKImage newImage = SKImage.FromEncodedData(File.OpenRead("badge.png"));
+
+                    SKImage finalImage = SKImage.FromBitmap(badge);
+                    SKData data = finalImage.Encode();
+                    string template = "data/{0}_badge.png";
+                    data.SaveTo(File.OpenWrite(string.Format(template, employees[i].GetId())));
+                    // data.SaveTo(File.OpenWrite("data/employeeBadge.png"));
+
                 }
             }
-            // {
-            //     // Create image
-            //     SKImage newImage = SKImage.FromEncodedData(File.OpenRead("badge.png"));
+        }
 
-            //     SKData data = newImage.Encode();
-            //     data.SaveTo(File.OpenWrite("data/employeeBadge.png"));
-            // }
-        
     }
 }

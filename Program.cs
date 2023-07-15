@@ -8,75 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
-// namespace CatWorx.BadgeMaker
-// {
-//     /* 
-//     Within the namespace, there's a class named Program and a static method name Main(); it is the entry point of the application 
-//     and is invoked when the program runs, it's where the code is placed.
-//     */
-
-    
-//     class Program
-//     {
-//         // Will return a list of Employee instances
-        
-        
-// //  public static List<Employee> GetEmployees()
-// //         {
-            
-    
-// //             List<Employee> employees = new List<Employee>();
-           
-// //             while (true)
-// //             {
-
-// //                 Console.WriteLine("Enter first name: (leave empty to exit): ");
-
-// //                 string firstName = Console.ReadLine() ?? "";
-
-// //                 if (firstName == "")
-// //                 {
-// //                     break;
-// //                 }
-// //                 // Console.ReadLine() for each value
-                
-// //                 Console.Write("Enter last name: ");
-// //                 string lastName = Console.ReadLine() ?? "";
-// //                 Console.Write("Enter ID: ");
-// //                 int id = Int32.Parse(Console.ReadLine() ?? "");
-// //                 Console.Write("Enter Photo Url: ");
-// //                 string photoUrl = Console.ReadLine() ?? "";
-// //                 // Create a new Employee instance
-// //                 Employee currentEmployee = new Employee(firstName, lastName, id, photoUrl);
-// //                 // Add currentEmployee
-// //                 employees.Add(currentEmployee);
-// //             }
-// //             return employees;
-// //         }
-        
-//         async static Task Main(string[] args)
-//         {
-//             // List<Employee> employees = GetEmployees();
-//             employees = await PeopleFetcher.GetFromApi();
-            
-//             Util.PrintEmployees(employees);
-//             Util.MakeCSV(employees);
-//             await Util.MakeBadges(employees);
- 
-//         }
-//     }
-// }
-
-
-
-
 namespace CatWorx.BadgeMaker
 {
     class Program
     {
+        // Task is an asynchronous method
         async static Task Main(string[] args)
         {
+            // Ask user if they want to enter employee data, if yes GetEmployees() will run
             List<Employee> employees;
             Console.WriteLine("Would you like to enter employee information? (y/n): ");
             string response1 = Console.ReadLine() ?? "";
@@ -88,11 +27,11 @@ namespace CatWorx.BadgeMaker
                 await Util.MakeBadges(employees);
             }
 
+            // Ask user if they want to fetch employee data from, if yes GetFromApi() will run
             Console.WriteLine("Would you like to fetch employee data from the API? (y/n): ");
             string response2 = Console.ReadLine() ?? "";
             if (response2 == "y" || response2 == "yes" || response2 == "Yes")
             {
-                // employees = PeopleFetcher.GetFromAPI();
                 employees = await PeopleFetcher.GetFromApi();
                 Util.PrintEmployees(employees);
                 Util.MakeCSV(employees);
